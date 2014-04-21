@@ -1,0 +1,43 @@
+{
+	"ImportPath": "github.com/flynn/flynn-cli-dist",
+	"GoVersion": "go1.2.1",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/go-uuid/uuid",
+			"Comment": "null-12",
+			"Rev": "7dda39b2e7d5e265014674c5af696ba4186679e9"
+		},
+		{
+			"ImportPath": "github.com/bgentry/go-netrc/netrc",
+			"Rev": "2e5e1d1fe4532f987b2c023c3a766c3969e7606d"
+		},
+		{
+			"ImportPath": "github.com/bgentry/heroku-go",
+			"Rev": "afedbf637636a333600ee54e58a393bb2092bbec"
+		},
+		{
+			"ImportPath": "github.com/bmizerany/pq",
+			"Rev": "284a1d41dcc27fe8ccc413c339464698ab99f6d1"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "1be7a086a5fd6440ef16fe96baeda0c78282b980"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Rev": "270c42505a11c779b5a5aaecfa5ec717adac996e"
+		},
+		{
+			"ImportPath": "github.com/kr/binarydist",
+			"Rev": "9955b0ab8708602d411341e55fffd7e0700f86bd"
+		},
+		{
+			"ImportPath": "github.com/kr/s3",
+			"Rev": "495b6d5419e7b4257b0fa75fb4552f5fe4fa879a"
+		},
+		{
+			"ImportPath": "github.com/kr/secureheader",
+			"Rev": "08f5355a148253e68cbd0a230b3803510e4419b2"
+		}
+	]
+}

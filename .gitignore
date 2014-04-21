@@ -1,3 +1,4 @@
 /hkdist
 .env
 flynn-cli-dist
+flynn-build

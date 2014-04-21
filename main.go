@@ -1,27 +1,27 @@
-// Command hkdist provides services for distributing hk binaries and updates.
+// Command flynn-cli-dist provides services for distributing flynn-cli binaries
+// and updates.
 //
 // It has three sub-commands: build, web, and gen.
 //
-//   $ hkdist build [platforms]
+//   $ flynn-cli-dist build [platforms]
 //
 // This command builds cross-compiled binaries. The tool builds all known
 // platforms by default, but will optionally build for a specified list of
 // platforms instead.  It first fetches the source code and termines the latest
 // git tag on BUILDBRANCH.  Then, for each platform, it builds a binary
-// executable, uploads the binary to an S3 bucket, and posts its SHA-256 hash
-// to the hk distribution server (hk.heroku.com in production).
+// executable, uploads the binary to an S3 bucket, and posts its SHA-256 hash to
+// the flynn-cli distribution server (flynn-cli.herokuapp.com in production).
 //
-//   $ hkdist web
+//   $ flynn-cli-dist web
 //
-// This command provides directory service for hk binary hashes.
+// This command provides directory service for flynn-cli binary hashes.
 //
-//   $ hkdist gen
+//   $ flynn-cli-dist gen
 //
-// This command polls the distribution server to learn about new releases,
-// then generates byte-sequence patches between each pair of releases on
-// each platform. It puts these patches in an S3 bucket so the hk client
-// can use them for self-update instead of downloading a (much larger) full
-// release.
+// This command polls the distribution server to learn about new releases, then
+// generates byte-sequence patches between each pair of releases on each
+// platform. It puts these patches in an S3 bucket so the flynn client can use
+// them for self-update instead of downloading a (much larger) full release.
 package main
 
 import (

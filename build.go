@@ -78,7 +78,7 @@ func build(args []string) {
 
 	// clone repo
 	dir := buildName + "-build"
-	err := cloneRepo("https://github.com/heroku/hk.git", buildbranch, dir)
+	err := cloneRepo("https://github.com/flynn/flynn-cli.git", buildbranch, dir)
 	if err != nil {
 		log.Fatalf("cloning repo to %s on branch %s: %s\n", dir, buildbranch, err)
 	}
@@ -221,6 +221,9 @@ const relverGo = `
 // +build release
 
 package main
+
+import "path/filepath"
+
 const (
 	Version = %q
 )
@@ -229,7 +232,7 @@ var updater = &Updater{
 	apiURL:  %q,
 	binURL:  %q,
 	diffURL: %q,
-	dir:     hkHome() + "/update/",
+	dir:     filepath.Join(homedir(), ".flynn", "update"),
 	cmdName: %q,
 }
 `
@@ -420,7 +423,7 @@ func (d *diff) Generate() {
 }
 
 func (d *diff) runGen(deadline time.Time) {
-	command := "hkdist gen " + d.Cmd + " " + d.Platform + " " + d.From + " " + d.To
+	command := "flynn-cli-dist gen " + d.Cmd + " " + d.Platform + " " + d.From + " " + d.To
 	_, err := client.DynoCreate(hkgenAppName, command, nil)
 	if err != nil {
 		log.Printf("diff.runGen %s -> %s: %s", d.From, d.To, err)

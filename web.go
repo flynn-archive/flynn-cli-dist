@@ -25,12 +25,12 @@ var db *sql.DB
 
 // Examples:
 //
-//   PUT /hk-1-linux-386.json
-//   PUT /hk-linux-386.json
+//   PUT /flynn-1-linux-386.json
+//   PUT /flynn-linux-386.json
 //
-//   GET /hk-current-linux-386.json
-//   GET /hk-1-linux-386.json
-//   GET /hk.gz
+//   GET /flynn-current-linux-386.json
+//   GET /flynn-1-linux-386.json
+//   GET /flynn.gz
 func web(args []string) {
 	mustHaveEnv("DATABASE_URL")
 	initwebdb()
@@ -39,8 +39,8 @@ func web(args []string) {
 	r.HandleFunc("/{cmd}/current/{plat}.json", http.HandlerFunc(curInfo)).Methods("GET", "HEAD")
 	r.HandleFunc("/{cmd}/{ver}/{plat}.json", http.HandlerFunc(getHash)).Methods("GET", "HEAD")
 	r.HandleFunc("/release.json", http.HandlerFunc(listReleases)).Methods("GET", "HEAD")
-	r.Path("/{cmd}/current/{plat}.json").Methods("PUT").Handler(authenticate{herokaiOnly{http.HandlerFunc(setCur)}})
-	r.Path("/{cmd}/{ver}/{plat}.json").Methods("PUT").Handler(authenticate{herokaiOnly{http.HandlerFunc(putVer)}})
+	r.Path("/{cmd}/current/{plat}.json").Methods("PUT").Handler(authenticate{cupcakeOnly{http.HandlerFunc(setCur)}})
+	r.Path("/{cmd}/{ver}/{plat}.json").Methods("PUT").Handler(authenticate{cupcakeOnly{http.HandlerFunc(putVer)}})
 	r.PathPrefix("/").Methods("GET", "HEAD").Handler(http.FileServer(http.Dir("hkdist/public")))
 	http.Handle("/", r)
 	secureheader.DefaultConfig.PermitClearLoopback = true
@@ -297,12 +297,12 @@ func (x authenticate) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	x.Handler.ServeHTTP(w, r)
 }
 
-type herokaiOnly struct {
+type cupcakeOnly struct {
 	http.Handler
 }
 
-func (x herokaiOnly) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if !strings.HasSuffix(r.Header.Get(":email"), "@heroku.com") {
+func (x cupcakeOnly) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if !strings.HasSuffix(r.Header.Get(":email"), "@cupcake.io") {
 		http.Error(w, "unauthorized", 401)
 		return
 	}

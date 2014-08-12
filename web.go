@@ -41,7 +41,7 @@ func web(args []string) {
 	r.HandleFunc("/release.json", http.HandlerFunc(listReleases)).Methods("GET", "HEAD")
 	r.Path("/{cmd}/current/{plat}.json").Methods("PUT").Handler(authenticate{cupcakeOnly{http.HandlerFunc(setCur)}})
 	r.Path("/{cmd}/{ver}/{plat}.json").Methods("PUT").Handler(authenticate{cupcakeOnly{http.HandlerFunc(putVer)}})
-	r.Handle("/", http.RedirectHandler("https://github.com/flynn/flynn-cli", http.StatusFound))
+	r.Handle("/", http.RedirectHandler("https://github.com/flynn/flynn", http.StatusFound))
 	http.Handle("/", r)
 	secureheader.DefaultConfig.PermitClearLoopback = true
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), secureheader.DefaultConfig)

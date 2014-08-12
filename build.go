@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
@@ -78,12 +79,12 @@ func build(args []string) {
 
 	// clone repo
 	dir := buildName + "-build"
-	err := cloneRepo("https://github.com/flynn/flynn-cli.git", buildbranch, dir)
+	err := cloneRepo("https://github.com/flynn/flynn.git", buildbranch, dir)
 	if err != nil {
 		log.Fatalf("cloning repo to %s on branch %s: %s\n", dir, buildbranch, err)
 	}
 
-	if err := os.Chdir(dir); err != nil {
+	if err := os.Chdir(filepath.Join(dir, "cli")); err != nil {
 		log.Fatal(err)
 	}
 
@@ -92,7 +93,7 @@ func build(args []string) {
 		log.Fatalf("listing tags: %s", err)
 	}
 	ver := string(bytes.TrimSpace(tagb))
-	if ver[0] != 'v' || strings.IndexFunc(ver[1:], badVersionRune) >= 0 {
+	if !strings.HasPrefix(ver, "cli-v") || strings.IndexFunc(ver[5:], badVersionRune) >= 0 {
 		log.Fatalf("bad tag name: %s", ver)
 	}
 
@@ -101,7 +102,7 @@ func build(args []string) {
 	hkuser, hkpass = getCreds("api.heroku.com")
 	client.Username = hkuser
 	client.Password = hkpass
-	desc := fmt.Sprintf("%s release %s", buildName, ver)
+	desc := fmt.Sprintf("%s release %s", buildName, ver[4:])
 	// get Heroku OAuth token to provide to the hkdist API
 	identityToken, err = identityauthreq(desc, []string{"identity"})
 	if err != nil {
@@ -129,7 +130,7 @@ func build(args []string) {
 			Name: buildName,
 			OS:   platform[:sepIndex],
 			Arch: platform[sepIndex+1:],
-			Ver:  ver[1:],
+			Ver:  ver[5:],
 		}
 
 		err = b.EnsureBuiltAndRegistered()

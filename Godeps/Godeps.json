@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/flynn/flynn-cli-dist",
-	"GoVersion": "go1.2.1",
+	"GoVersion": "go1.3",
 	"Deps": [
 		{
 			"ImportPath": "code.google.com/p/go-uuid/uuid",
